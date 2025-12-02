@@ -41,4 +41,8 @@ export default defineConfig({
       }
     })
   ],
+  server: {
+    host: '0.0.0.0', // listen on all interfaces, not just localhost
+    port: 5173,      // optional, but keeps it consistent
+  },
 })

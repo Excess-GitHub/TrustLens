@@ -9,7 +9,8 @@
       {{ verdict }}
     </div>
     <button v-if="showShare" @click="handleShare" class="share-btn">
-      📤
+      <span class="share-icon">📤</span>
+      <span class="share-text">Share</span>
     </button>
   </div>
 </template>
@@ -81,7 +82,7 @@ const handleShare = async () => {
 
 .verdict-media {
   padding: 0.5rem;
-  background: white;
+  background: var(--surface-1);
   margin: 0.5rem;
   border-radius: 8px;
 }
@@ -97,28 +98,31 @@ const handleShare = async () => {
 
 .share-btn {
   position: absolute;
-  top: 1rem;
   right: 1rem;
-  background: rgba(255, 255, 255, 0.9);
+  bottom: 1rem;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
   border: none;
-  border-radius: 50%;
-  width: 40px;
+  border-radius: 9999px;
   height: 40px;
-  font-size: 1.2rem;
+  padding: 0 12px;
+  font-size: 0.95rem;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s;
+  gap: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s, background 0.2s;
 }
 
 .share-btn:hover {
-  transform: scale(1.1);
+  transform: translateY(-1px);
+  background: rgba(0, 0, 0, 0.7);
 }
 
 .share-btn:active {
-  transform: scale(0.95);
+  transform: translateY(0);
 }
 </style>
 

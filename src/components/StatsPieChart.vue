@@ -8,7 +8,7 @@
         cy="100"
         r="80"
         fill="none"
-        stroke="#e0e0e0"
+        stroke="var(--border)"
         stroke-width="40"
       />
       <circle

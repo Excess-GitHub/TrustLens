@@ -1,52 +1,46 @@
 // FILE: src/components/BottomHomeBar.vue
 
 <template>
-  <div class="bottom-home-bar">
-    <button @click="goHome" class="home-btn">Home</button>
-  </div>
+  <button @click="handleBack" class="bottom-back-btn" aria-label="Back">← Back</button>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
 
+const props = defineProps({
+  onBack: Function
+});
+
 const router = useRouter();
 
-const goHome = () => {
-  router.push('/');
+const handleBack = () => {
+  if (props.onBack) {
+    props.onBack();
+  } else {
+    router.back();
+  }
 };
 </script>
 
 <style scoped>
-.bottom-home-bar {
+.bottom-back-btn {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1rem;
-  background: #fff;
-  border-top: 1px solid #e0e0e0;
-  z-index: 100;
-}
-
-.home-btn {
-  width: 100%;
-  padding: 1rem;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  padding: 12px 16px;
   background: #2196F3;
-  color: white;
+  color: #fff;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 10px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  z-index: 200;
+  max-width: calc(100vw - 32px);
 }
 
-.home-btn:hover {
-  background: #1976D2;
-}
-
-.home-btn:active {
-  background: #1565C0;
-}
+.bottom-back-btn:hover { background: #1976D2; }
+.bottom-back-btn:active { background: #1565C0; }
 </style>
 

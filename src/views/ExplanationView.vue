@@ -17,12 +17,19 @@
         </div>
       </div>
       <div v-else class="generic-explanation">
-        <p>{{ result?.shortExplanation || 'No detailed explanation available for this analysis.' }}</p>
-        <p>This content was analyzed using TrustLens AI detection technology. The verdict is based on various indicators and patterns detected in the media.</p>
+        <p>{{ result?.shortExplanation || 'Analysis insights are shown below.' }}</p>
+      </div>
+
+      <div class="explanation-bubbles">
+        <div class="bubble"><strong>Inconsistent Lighting: Multiple light sources illuminating objects with mismatched shadows and highlights.</strong></div>
+        <div class="bubble"><strong>Anatomical Irregularities: Subtle distortions in fingers, joints, and limb proportions that deviate from natural human anatomy.</strong></div>
+        <div class="bubble"><strong>Smearing: Unnatural blending and “smudging” in background surfaces, particularly around edges of complex objects.</strong></div>
+        <div class="bubble"><strong>Asymmetric Details: Facial features slightly misaligned (e.g., uneven eye size, mismatched ear positioning).</strong></div>
+        <div class="bubble"><strong>Unnatural Reflections: Reflections on glass/metal surfaces do not correspond to surrounding scene elements.</strong></div>
       </div>
     </div>
     
-    <BottomHomeBar />
+    <BottomHomeBar :onBack="goToResult" />
   </div>
 </template>
 
@@ -49,12 +56,16 @@ const handleShare = () => {
     alert('To share this explanation, use your browser\'s print function and save as PDF.');
   }
 };
+
+const goToResult = () => {
+  router.push('/result');
+};
 </script>
 
 <style scoped>
 .explanation-view {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: var(--bg);
   padding-bottom: 5rem;
 }
 
@@ -71,7 +82,7 @@ const handleShare = () => {
 }
 
 .detail-item {
-  background: white;
+  background: var(--surface-1);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -81,7 +92,7 @@ const handleShare = () => {
   margin-bottom: 1rem;
   border-radius: 8px;
   overflow: hidden;
-  background: #f0f0f0;
+  background: var(--surface-2);
 }
 
 .detail-image img {
@@ -93,18 +104,18 @@ const handleShare = () => {
 .image-placeholder {
   padding: 3rem;
   text-align: center;
-  color: #999;
+  color: var(--muted-2);
   font-style: italic;
 }
 
 .detail-text {
   font-size: 1rem;
   line-height: 1.6;
-  color: #333;
+  color: var(--text);
 }
 
 .generic-explanation {
-  background: white;
+  background: var(--surface-1);
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -113,7 +124,7 @@ const handleShare = () => {
 .generic-explanation p {
   font-size: 1rem;
   line-height: 1.6;
-  color: #333;
+  color: var(--text);
   margin-bottom: 1rem;
 }
 
@@ -129,6 +140,27 @@ const handleShare = () => {
   .top-bar, .bottom-home-bar {
     display: none;
   }
+}
+
+.explanation-bubbles {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.bubble {
+  background: var(--surface-1);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.bubble strong {
+  display: block;
+  color: var(--text);
+  font-weight: 700;
+  line-height: 1.6;
 }
 </style>
 

@@ -1,7 +1,7 @@
 // FILE: src/views/FlagDetailView.vue
 
 <template>
-  <div class="flag-detail-view">
+  <div class="flag-detail-view" :class="{ 'smearing-theme': flag && flag.id === 'smearing' }">
     <TopBar :title="flag?.name || 'Flag Detail'" showRightIcon rightIconText="📤" @right-click="handleShare" />
     
     <div class="flag-detail-content">
@@ -97,7 +97,7 @@ const handleShare = () => {
 <style scoped>
 .flag-detail-view {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: var(--bg);
   padding-bottom: 5rem;
 }
 
@@ -120,7 +120,7 @@ const handleShare = () => {
 .flag-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #333;
+  color: var(--text);
   margin: 0;
 }
 
@@ -131,7 +131,7 @@ const handleShare = () => {
 
 .encountered-text {
   font-size: 1.2rem;
-  color: #666;
+  color: var(--muted);
   margin: 0;
 }
 
@@ -144,7 +144,7 @@ const handleShare = () => {
 
 .thumbnail-item {
   aspect-ratio: 1;
-  background: white;
+  background: var(--surface-1);
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -163,7 +163,7 @@ const handleShare = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f0f0f0;
+  background: var(--surface-2);
 }
 
 .thumbnail-icon {
@@ -177,7 +177,7 @@ const handleShare = () => {
 .section-title {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #333;
+  color: var(--text);
   margin-bottom: 1.5rem;
 }
 
@@ -187,8 +187,18 @@ const handleShare = () => {
   gap: 2rem;
 }
 
+/* Smearing page theming */
+.smearing-theme .flag-title,
+.smearing-theme .section-title {
+  color: var(--surface-1);
+}
+
+.smearing-theme .encountered-text {
+  color: #ffffff;
+}
+
 .flag-detail-item {
-  background: white;
+  background: var(--surface-1);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -198,7 +208,7 @@ const handleShare = () => {
   margin-bottom: 1rem;
   border-radius: 8px;
   overflow: hidden;
-  background: #f0f0f0;
+  background: var(--surface-2);
 }
 
 .detail-image img {
@@ -210,18 +220,18 @@ const handleShare = () => {
 .image-placeholder {
   padding: 3rem;
   text-align: center;
-  color: #999;
+  color: var(--muted-2);
   font-style: italic;
 }
 
 .detail-text {
   font-size: 1rem;
   line-height: 1.6;
-  color: #333;
+  color: var(--text);
 }
 
 .generic-flag-info {
-  background: white;
+  background: var(--surface-1);
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -230,7 +240,7 @@ const handleShare = () => {
 .flag-description {
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #333;
+  color: var(--text);
   margin-bottom: 1.5rem;
 }
 
@@ -245,7 +255,7 @@ const handleShare = () => {
   padding-left: 1.5rem;
   position: relative;
   line-height: 1.6;
-  color: #333;
+  color: var(--text);
 }
 
 .detection-tips li::before {

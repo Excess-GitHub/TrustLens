@@ -1,5 +1,7 @@
 // FILE: src/data/fakeAnalysisDb.js
 
+const SMEARING_IMG = new URL('../Resources/Smearing.jpg', import.meta.url).href;
+
 export const FLAG_DEFS = {
   fingers: {
     id: 'fingers',
@@ -12,11 +14,11 @@ export const FLAG_DEFS = {
     ],
     details: [
       {
-        cropImage: '/flags/fingers_example1.png',
+        cropImage: '/Resources/camera.png',
         text: 'In this example, the hand appears to have six fingers, which rarely happens in real photos.'
       },
       {
-        cropImage: '/flags/fingers_example2.png',
+        cropImage: '/Resources/Details.png',
         text: 'Finger joints are melted and ring edges blend into the skin, typical of generative models.'
       }
     ]
@@ -68,7 +70,7 @@ export const FLAG_DEFS = {
     ],
     details: [
       {
-        cropImage: '/flags/smearing_example1.png',
+        cropImage: SMEARING_IMG,
         text: 'The background smears into the subject, suggesting generative artifacts.'
       }
     ]
@@ -101,8 +103,8 @@ export const FAKE_ANALYSIS_DB = {
     shortExplanation: 'Hands and fingers show typical AI artifacts.',
     flags: ['fingers', 'smearing'],
     details: [
-      { cropImage: '/crops/hands/6_fingers.png', text: 'This hand appears to have six fingers, a classic AI tell.' },
-      { cropImage: '/crops/hands/smear.png', text: 'The background smears into the fingers, suggesting generative artifacts.' }
+      { cropImage: '/Resources/camera.png', text: 'This hand appears to have six fingers, a classic AI tell.' },
+      { cropImage: '/Resources/Fail.png', text: 'The background smears into the fingers, suggesting generative artifacts.' }
     ]
   },
   'sample_real_photo': {

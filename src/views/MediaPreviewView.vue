@@ -2,16 +2,17 @@
 
 <template>
   <div class="media-preview-view">
-    <TopBar title="Preview" showBack @back="handleCancel" />
+    <TopBar title="Preview" />
     
     <div class="preview-content">
-      <MediaPreviewCard v-if="media" :media="media" />
+      <MediaPreviewCard v-if="mediaObj" :media="mediaObj" />
       
       <div class="action-buttons">
         <button @click="handleCheck" class="check-btn">Check This</button>
         <button @click="handleCancel" class="cancel-btn">Cancel</button>
       </div>
     </div>
+    <BottomHomeBar :onBack="handleCancel" />
   </div>
 </template>
 
@@ -21,13 +22,15 @@ import { useRouter } from 'vue-router';
 import { useTrustLensStore } from '../store/useTrustLensStore.js';
 import TopBar from '../components/TopBar.vue';
 import MediaPreviewCard from '../components/MediaPreviewCard.vue';
+import BottomHomeBar from '../components/BottomHomeBar.vue';
 
 const router = useRouter();
 const store = useTrustLensStore();
 
 const media = store.currentMedia;
+const mediaObj = computed(() => media.value || null);
 
-if (!media.value) {
+if (!mediaObj.value) {
   router.push('/');
 }
 
@@ -45,8 +48,8 @@ const handleCancel = () => {
 <style scoped>
 .media-preview-view {
   min-height: 100vh;
-  background: #f5f5f5;
-  padding-bottom: 2rem;
+  background: var(--bg);
+  padding-bottom: 5rem;
 }
 
 .preview-content {
@@ -84,18 +87,19 @@ const handleCancel = () => {
 }
 
 .cancel-btn {
-  background: #f44336;
+  background: #B9272C;
   color: white;
 }
 
 .cancel-btn:hover {
-  background: #d32f2f;
+  background: #9E2024;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+  box-shadow: 0 4px 12px rgba(185, 39, 44, 0.3);
 }
 
 .check-btn:active, .cancel-btn:active {
   transform: translateY(0);
 }
 </style>
+
 
