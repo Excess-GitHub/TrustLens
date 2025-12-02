@@ -7,7 +7,7 @@
       <div class="flag-name">{{ flag.name }}</div>
       <div v-if="count !== undefined" class="flag-count">{{ count }} {{ count === 1 ? 'time' : 'times' }}</div>
     </div>
-    <div class="flag-arrow">→</div>
+    <div class="flag-arrow" :class="{ 'white-arrow': flag.id === 'smearing' }">→</div>
   </div>
 </template>
 
@@ -35,18 +35,18 @@ const handleClick = () => {
   display: flex;
   align-items: center;
   padding: 1rem;
-  background: white;
-  border-bottom: 1px solid #e0e0e0;
+  background: var(--surface-1);
+  border-bottom: 1px solid var(--border);
   cursor: pointer;
   transition: background 0.2s;
 }
 
 .flag-list-item:hover {
-  background: #f5f5f5;
+  background: var(--surface-2);
 }
 
 .flag-list-item:active {
-  background: #eeeeee;
+  background: var(--surface-2);
 }
 
 .flag-icon {
@@ -61,19 +61,23 @@ const handleClick = () => {
 .flag-name {
   font-weight: 600;
   font-size: 1.1rem;
-  color: #333;
+  color: var(--text);
   margin-bottom: 0.25rem;
 }
 
 .flag-count {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--muted);
 }
 
 .flag-arrow {
   font-size: 1.5rem;
-  color: #999;
+  color: var(--muted-2);
   margin-left: 1rem;
+}
+
+.white-arrow {
+  color: #ffffff;
 }
 </style>
 

@@ -109,9 +109,7 @@ export function useTrustLensStore() {
           verdict = 'AI';
           flags = ['smearing'];
           shortExplanation = 'Some artifacts suggest possible AI generation.';
-          details = [
-            { cropImage: null, text: 'Subtle inconsistencies detected in the content.' }
-          ];
+          details = [];
         }
       }
       

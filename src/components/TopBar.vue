@@ -3,15 +3,22 @@
 <template>
   <div class="top-bar">
     <div class="top-bar-left">
+      <button @click="handleHelp" class="help-btn" aria-label="Help">Help</button>
       <span v-if="showTime" class="time">{{ currentTime }}</span>
       <button v-if="showBack" @click="handleBack" class="back-btn">← Back</button>
     </div>
     <div class="top-bar-center">
-      <h1 v-if="title" class="title">{{ title }}</h1>
+      <div class="brand">
+        <div class="brand-name">TrustLens</div>
+        <div v-if="title" class="subtitle">{{ title }}</div>
+      </div>
     </div>
     <div class="top-bar-right">
       <button v-if="showRightIcon" @click="handleRightClick" class="icon-btn">
         {{ rightIconText || '?' }}
+      </button>
+      <button v-if="showHome" @click="handleHome" class="home-btn" aria-label="Home">
+        <img :src="homeIcon" alt="Home" />
       </button>
     </div>
   </div>
@@ -19,6 +26,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps({
   title: String,
@@ -27,12 +35,15 @@ const props = defineProps({
   showRightIcon: { type: Boolean, default: false },
   onRightIconClick: Function,
   rightIconText: { type: String, default: '?' },
-  showTime: { type: Boolean, default: false }
+  showTime: { type: Boolean, default: false },
+  showHome: { type: Boolean, default: true }
 });
 
 const emit = defineEmits(['back', 'right-click']);
 
 const currentTime = ref('');
+const router = useRouter();
+const homeIcon = new URL('../Resources/Home.png', import.meta.url).href;
 
 const updateTime = () => {
   const now = new Date();
@@ -73,6 +84,14 @@ const handleRightClick = () => {
     emit('right-click');
   }
 };
+
+const handleHome = () => {
+  router.push('/');
+};
+
+const handleHelp = () => {
+  router.push('/help');
+};
 </script>
 
 <style scoped>
@@ -81,11 +100,13 @@ const handleRightClick = () => {
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background: #fff;
-  border-bottom: 1px solid #e0e0e0;
+  background: linear-gradient(90deg, #181818ff 0%, #3d3d3dff 100%);
+  color: #fff;
+  border-bottom: none;
   position: sticky;
   top: 0;
   z-index: 100;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
 }
 
 .top-bar-left {
@@ -105,28 +126,48 @@ const handleRightClick = () => {
   justify-content: flex-end;
 }
 
-.title {
+.brand-name {
   margin: 0;
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
 }
 
 .time {
   font-size: 0.9rem;
-  color: #666;
+  color: rgba(255, 255, 255, 0.85);
 }
 
-.back-btn, .icon-btn {
+.back-btn, .icon-btn, .help-btn {
   background: none;
   border: none;
   font-size: 1.2rem;
   cursor: pointer;
   padding: 0.5rem;
-  color: #333;
+  color: #fff;
 }
 
-.back-btn:hover, .icon-btn:hover {
+.back-btn:hover, .icon-btn:hover, .help-btn:hover {
   opacity: 0.7;
 }
-</style>
 
+.home-btn {
+  background: transparent;
+  border: none;
+  padding: 0.25rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+.home-btn img {
+  width: 22px;
+  height: 22px;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+</style>

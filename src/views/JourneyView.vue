@@ -2,7 +2,7 @@
 
 <template>
   <div class="journey-view">
-    <TopBar title="Your AI Journey" showRightIcon rightIconText="📤" @right-click="handleShare" />
+    <TopBar title="Your AI Journey" />
     
     <div class="journey-content">
       <div class="stats-section">
@@ -28,7 +28,13 @@
           <p>No AI flags detected yet. Keep checking content to see flags appear here!</p>
         </div>
       </div>
+
+      <button class="floating-share" @click="handleShare">
+        <span class="icon">📤</span>
+        <span>Share</span>
+      </button>
     </div>
+    <BottomHomeBar />
   </div>
 </template>
 
@@ -38,6 +44,7 @@ import { useRouter } from 'vue-router';
 import { useTrustLensStore } from '../store/useTrustLensStore.js';
 import { FLAG_DEFS } from '../data/fakeAnalysisDb.js';
 import TopBar from '../components/TopBar.vue';
+import BottomHomeBar from '../components/BottomHomeBar.vue';
 import StatsPieChart from '../components/StatsPieChart.vue';
 import FlagListItem from '../components/FlagListItem.vue';
 
@@ -73,8 +80,8 @@ const handleShare = () => {
 <style scoped>
 .journey-view {
   min-height: 100vh;
-  background: #f5f5f5;
-  padding-bottom: 2rem;
+  background: var(--bg);
+  padding-bottom: 5rem;
 }
 
 .journey-content {
@@ -90,13 +97,13 @@ const handleShare = () => {
 .stats-title {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #333;
+  color: var(--surface-1);
   text-align: center;
   margin: 0;
 }
 
 .chart-card {
-  background: white;
+  background: var(--surface-1);
   border-radius: 12px;
   padding: 2rem;
   margin: 2rem 0;
@@ -110,24 +117,52 @@ const handleShare = () => {
 .flags-title {
   font-size: 1.3rem;
   font-weight: 600;
-  color: #333;
+  color: var(--surface-1);
   margin-bottom: 1rem;
 }
 
 .flags-list {
-  background: white;
+  background: var(--surface-1);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .no-flags {
-  background: white;
+  background: var(--surface-1);
   border-radius: 12px;
   padding: 2rem;
   text-align: center;
-  color: #666;
+  color: var(--muted);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.floating-share {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border: none;
+  border-radius: 9999px;
+  height: 44px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  transition: transform 0.2s, background 0.2s;
+  z-index: 150;
+}
+
+.floating-share:hover {
+  transform: translateY(-1px);
+  background: rgba(0,0,0,0.7);
+}
+
+.floating-share .icon {
+  font-size: 1.1rem;
 }
 
 @media print {

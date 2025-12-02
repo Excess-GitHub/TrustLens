@@ -2,7 +2,7 @@
 
 <template>
   <div class="help-view">
-    <TopBar title="Help" showBack @back="goHome" />
+    <TopBar title="Help" />
     
     <div class="help-content">
       <div class="help-section">
@@ -43,7 +43,7 @@
         </p>
       </div>
       
-      <BottomHomeBar />
+      <BottomHomeBar :onBack="goHome" />
     </div>
   </div>
 </template>
@@ -63,7 +63,7 @@ const goHome = () => {
 <style scoped>
 .help-view {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: var(--bg);
   padding-bottom: 5rem;
 }
 
@@ -74,7 +74,7 @@ const goHome = () => {
 }
 
 .help-section {
-  background: white;
+  background: var(--surface-1);
   border-radius: 12px;
   padding: 2rem;
   margin-bottom: 1.5rem;
@@ -84,14 +84,14 @@ const goHome = () => {
 .help-section h2 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #333;
+  color: #ffffff;
   margin: 0 0 1rem 0;
 }
 
 .help-section p {
   font-size: 1rem;
   line-height: 1.6;
-  color: #666;
+  color: #ffffff;
   margin: 0 0 1rem 0;
 }
 
@@ -103,7 +103,7 @@ const goHome = () => {
 .help-section ul {
   margin: 0;
   padding-left: 1.5rem;
-  color: #666;
+  color: #ffffff;
 }
 
 .help-section li {
@@ -116,7 +116,7 @@ const goHome = () => {
 }
 
 .help-section strong {
-  color: #333;
+  color: #ffffff;
   font-weight: 600;
 }
 </style>

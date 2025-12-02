@@ -2,11 +2,11 @@
 
 <template>
   <div class="home-view">
-    <TopBar showRightIcon rightIconText="?" @right-click="goToHelp" />
+    <TopBar />
     
     <div class="home-content">
       <div class="logo-container">
-        <div class="magnifying-glass">🔍</div>
+        <img :src="trustLensIcon" alt="TrustLens" class="brand-logo" />
       </div>
       
       <div class="link-input-section">
@@ -18,33 +18,46 @@
             class="link-input"
             @keyup.enter="handleLinkSubmit"
           />
-          <button @click="handleLinkSubmit" class="link-submit-btn">→</button>
+          <button
+            @click="handleLinkSubmit"
+            class="link-submit-btn"
+            :disabled="!linkInput.trim()"
+            aria-label="Submit link"
+          >
+            →
+          </button>
         </div>
       </div>
       
-      <div class="action-buttons">
-        <button @click="triggerFileInput('gallery')" class="action-btn gallery-btn">
-          📷 Gallery
-        </button>
-        <button @click="triggerFileInput('files')" class="action-btn files-btn">
-          📁 Files
-        </button>
-        <button @click="triggerFileInput('camera')" class="action-btn camera-btn">
-          📸 Take Photo
-        </button>
+      <div class="icon-grid">
+        <div class="icon-tile" @click="triggerFileInput('gallery')">
+          <img :src="galleryIcon" alt="Gallery" />
+          <div class="icon-label">Gallery</div>
+        </div>
+        <div class="icon-tile" @click="triggerFileInput('files')">
+          <img :src="filesIcon" alt="Files" />
+          <div class="icon-label">Files</div>
+        </div>
+        <div class="icon-tile" @click="triggerFileInput('camera')">
+          <img :src="cameraIcon" alt="Take Photo" />
+          <div class="icon-label">Take Photo</div>
+        </div>
       </div>
       
       <input
         ref="fileInputRef"
         type="file"
-        accept="image/*,video/*"
+        :accept="fileAccept"
+        :capture="fileCapture"
         style="display: none"
         @change="handleFileSelect"
       />
       
       <div class="journey-card" @click="goToJourney">
-        <div class="journey-icon">📊</div>
-        <div class="journey-text">Your AI Journey</div>
+        <div class="journey-icon">
+          <img :src="detailsIcon" alt="Details" />
+        </div>
+        <div class="journey-text">Past Results</div>
       </div>
     </div>
     
@@ -69,7 +82,15 @@ const store = useTrustLensStore();
 
 const linkInput = ref('');
 const fileInputRef = ref(null);
+const fileAccept = ref('image/*,video/*');
+const fileCapture = ref(null);
 let currentSource = 'files';
+
+const galleryIcon = new URL('../Resources/gallery.png', import.meta.url).href;
+const filesIcon = new URL('../Resources/files.png', import.meta.url).href;
+const cameraIcon = new URL('../Resources/camera.png', import.meta.url).href;
+const detailsIcon = new URL('../Resources/Details.png', import.meta.url).href;
+const trustLensIcon = new URL('../Resources/TrustLens.png', import.meta.url).href;
 
 const handleLinkSubmit = () => {
   const url = linkInput.value.trim();
@@ -82,6 +103,14 @@ const handleLinkSubmit = () => {
 
 const triggerFileInput = (source) => {
   currentSource = source;
+  if (source === 'camera') {
+    fileAccept.value = 'image/*';
+    fileCapture.value = 'environment';
+  } else {
+    fileAccept.value = 'image/*,video/*';
+    fileCapture.value = null; // remove capture to show picker/gallery
+  }
+  // Next tick not strictly necessary; set then click.
   fileInputRef.value?.click();
 };
 
@@ -94,6 +123,11 @@ const handleFileSelect = (event) => {
   // Reset input
   if (fileInputRef.value) {
     fileInputRef.value.value = '';
+  }
+  // Reset attributes to defaults after use
+  if (currentSource === 'camera') {
+    fileAccept.value = 'image/*,video/*';
+    fileCapture.value = null;
   }
 };
 
@@ -113,7 +147,7 @@ const dismissModal = () => {
 <style scoped>
 .home-view {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: var(--bg);
   padding-bottom: 2rem;
 }
 
@@ -128,8 +162,10 @@ const dismissModal = () => {
   margin: 3rem 0;
 }
 
-.magnifying-glass {
-  font-size: 6rem;
+.brand-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
   display: inline-block;
 }
 
@@ -140,7 +176,7 @@ const dismissModal = () => {
 .input-wrapper {
   display: flex;
   gap: 0.5rem;
-  background: white;
+  background: var(--surface-1);
   border-radius: 12px;
   padding: 0.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -162,62 +198,70 @@ const dismissModal = () => {
   padding: 0 1.5rem;
   font-size: 1.2rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, opacity 0.2s;
 }
 
-.link-submit-btn:hover {
+.link-submit-btn:hover:enabled {
   background: #1976D2;
 }
 
+.link-submit-btn:disabled {
+  background: #9E9E9E;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 .action-buttons {
-  display: flex;
+  display: none;
+}
+
+/* New icon tile styles */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   margin: 2rem 0;
 }
 
-.action-btn {
-  flex: 1;
-  padding: 1.5rem;
-  border: none;
+.icon-tile {
+  background: var(--surface-1);
   border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.action-btn:hover {
+.icon-tile:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.action-btn:active {
-  transform: translateY(0);
+.icon-tile img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
 }
 
-.gallery-btn {
-  background: #E3F2FD;
-  color: #1976D2;
-}
-
-.files-btn {
-  background: #FFF3E0;
-  color: #F57C00;
-}
-
-.camera-btn {
-  background: #F3E5F5;
-  color: #7B1FA2;
+.icon-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
 }
 
 .journey-card {
   margin-top: 3rem;
   padding: 1.5rem;
-  background: white;
+  background: var(--surface-1);
   border-radius: 12px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -230,13 +274,20 @@ const dismissModal = () => {
 }
 
 .journey-icon {
-  font-size: 2rem;
+  width: 48px;
+  height: 48px;
+}
+
+.journey-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .journey-text {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #333;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
 }
 
 .modal-overlay {
@@ -253,7 +304,7 @@ const dismissModal = () => {
 }
 
 .modal-content {
-  background: white;
+  background: var(--surface-1);
   padding: 2rem;
   border-radius: 12px;
   max-width: 300px;
@@ -263,7 +314,7 @@ const dismissModal = () => {
 
 .modal-content h2 {
   margin: 0 0 1.5rem 0;
-  color: #333;
+  color: var(--text);
 }
 
 .modal-ok-btn {

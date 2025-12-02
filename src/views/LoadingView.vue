@@ -2,7 +2,11 @@
 
 <template>
   <div class="loading-view">
+    <TopBar />
     <div class="loading-content">
+      <div class="loading-icon">
+        <img :src="searchIcon" alt="Search" />
+      </div>
       <div class="loading-text">Loading...</div>
       
       <div class="progress-container">
@@ -22,9 +26,10 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useTrustLensStore } from '../store/useTrustLensStore.js';
+import TopBar from '../components/TopBar.vue';
 
 const router = useRouter();
 const store = useTrustLensStore();
@@ -32,6 +37,8 @@ const store = useTrustLensStore();
 const media = store.currentMedia;
 const progress = store.analysisProgress;
 const isAnalyzing = store.isAnalyzing;
+
+const searchIcon = new URL('../Resources/Search.png', import.meta.url).href;
 
 if (!media.value) {
   router.push('/');
@@ -67,29 +74,35 @@ const handleCancel = () => {
   store.cancelAnalysis();
   router.push('/');
 };
+
+// no link input on loading screen per spec
 </script>
 
 <style scoped>
 .loading-view {
   min-height: 100vh;
-  background: #f5f5f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
+  background: var(--bg);
+  padding-bottom: 2rem;
 }
 
 .loading-content {
-  max-width: 400px;
-  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
   text-align: center;
 }
 
 .loading-text {
   font-size: 2rem;
   font-weight: 600;
-  color: #333;
+  color: #ffffff;
   margin-bottom: 2rem;
+  text-shadow:
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000,
+     0    0   4px rgba(0,0,0,0.6);
 }
 
 .progress-container {
@@ -99,7 +112,7 @@ const handleCancel = () => {
 .progress-bar {
   width: 100%;
   height: 20px;
-  background: #e0e0e0;
+  background: var(--border);
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 0.5rem;
@@ -114,22 +127,22 @@ const handleCancel = () => {
 
 .progress-text {
   font-size: 0.9rem;
-  color: #666;
+  color: #ffffff;
 }
 
 .info-bubble {
-  background: white;
+  background: var(--surface-1);
   padding: 1.5rem;
   border-radius: 12px;
   margin: 2rem 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  color: #666;
+  color: var(--muted);
 }
 
 .cancel-btn {
   width: 100%;
   padding: 1rem;
-  background: #f44336;
+  background: #B9272C;
   color: white;
   border: none;
   border-radius: 12px;
@@ -141,7 +154,19 @@ const handleCancel = () => {
 }
 
 .cancel-btn:hover {
-  background: #d32f2f;
+  background: #9E2024;
+}
+
+.loading-icon {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.loading-icon img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
 }
 </style>
 
