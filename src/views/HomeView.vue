@@ -60,14 +60,6 @@
         <div class="journey-text">Past Results</div>
       </div>
     </div>
-    
-    <!-- Cancelled Check Modal -->
-    <div v-if="store.lastCancelled.value" class="modal-overlay" @click="dismissModal">
-      <div class="modal-content" @click.stop>
-        <h2>Cancelled Check</h2>
-        <button @click="dismissModal" class="modal-ok-btn">OK</button>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -139,9 +131,6 @@ const goToHelp = () => {
   router.push('/help');
 };
 
-const dismissModal = () => {
-  store.clearLastCancelled();
-};
 </script>
 
 <style scoped>
@@ -290,47 +279,5 @@ const dismissModal = () => {
   color: var(--text);
 }
 
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: var(--surface-1);
-  padding: 2rem;
-  border-radius: 12px;
-  max-width: 300px;
-  width: 90%;
-  text-align: center;
-}
-
-.modal-content h2 {
-  margin: 0 0 1.5rem 0;
-  color: var(--text);
-}
-
-.modal-ok-btn {
-  width: 100%;
-  padding: 0.75rem;
-  background: #2196F3;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.modal-ok-btn:hover {
-  background: #1976D2;
-}
 </style>
 
